@@ -9,11 +9,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,8 +40,26 @@ public class AccountRestController {
         return accountService.getUsers();
     }
 
-    @PostMapping(path = "/users/createUser/**")
-    public AppUser saveUser(@RequestBody AppUser appUser) {
+    @RequestMapping(value = "/users/createUser")
+    public AppUser createUser(
+            @RequestParam("fullname") String fullname,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestPart("userPhoto") MultipartFile userPhoto
+    ) {
+
+        AppUser appUser = new AppUser();
+        appUser.setFullname(fullname);
+        appUser.setEmail(email);
+        appUser.setPassword(password);
+
+        try {
+            // Save or process the file
+            byte[] userPhotoBytes = userPhoto.getBytes();
+            appUser.setUserPhoto(userPhotoBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return accountService.addUser(appUser);
     }

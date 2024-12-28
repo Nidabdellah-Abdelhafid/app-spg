@@ -12,8 +12,9 @@ import java.util.Collection;
 @Data
 public class AppUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-generate the id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String fullname;
 
     @Column(unique = true)
@@ -22,6 +23,10 @@ public class AppUser {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
+    // New field to store user photo
+    @Lob
+    private byte[] userPhoto; // Store image as a byte array
 
     public AppUser() {
     }
@@ -58,17 +63,27 @@ public class AppUser {
         this.id = id;
     }
 
+    public byte[] getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setUserPhoto(byte[] userPhoto) {
+        this.userPhoto = userPhoto;
+    }
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<AppRole> appRoles = new ArrayList<>();
 
     public Collection<AppRole> getAppRoles() {
         return appRoles;
     }
-    public AppUser(long id, String fullname, String email, String password, Collection<AppRole> appRoles) {
+
+    public AppUser(long id, String fullname, String email, String password, Collection<AppRole> appRoles, byte[] userPhoto) {
         this.id = id;
         this.fullname = fullname;
         this.email = email;
         this.password = password;
         this.appRoles = appRoles;
+        this.userPhoto = userPhoto;
     }
 }

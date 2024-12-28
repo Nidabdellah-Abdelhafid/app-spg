@@ -28,16 +28,6 @@ public class ProjetAdmApplication {
             accountService.addRole(new AppRole(1L,"ADMIN"));
             accountService.addRole(new AppRole(2L,"USER"));
 
-            accountService.addUser(new AppUser(1,"Hafid Nid","hafidnid909@gmail.com","Azerty123",new ArrayList<>()));
-            accountService.addUser(new AppUser(2,"Youssef Nid","youssefnid@gmail.com","Azerty123",new ArrayList<>()));
-            accountService.addUser(new AppUser(3,"Mouad wakrim","mouad12@gmail.com","Azerty123",new ArrayList<>()));
-            accountService.addUser(new AppUser(4,"Ramid idar","ramididar@gmail.com","Azerty123",new ArrayList<>()));
-
-            accountService.addRoleToUser("ADMIN","hafidnid909@gmail.com");
-            accountService.addRoleToUser("USER","hafidnid909@gmail.com");
-            accountService.addRoleToUser("USER","youssefnid@gmail.com");
-            accountService.addRoleToUser("USER","mouad12@gmail.com");
-            accountService.addRoleToUser("USER","ramididar@gmail.com");
         };
     }
 }
