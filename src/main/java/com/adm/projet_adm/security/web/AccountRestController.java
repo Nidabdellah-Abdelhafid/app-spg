@@ -8,9 +8,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +23,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-
 public class AccountRestController {
     private AccountService accountService;
 
@@ -45,13 +41,17 @@ public class AccountRestController {
             @RequestParam("fullname") String fullname,
             @RequestParam("email") String email,
             @RequestParam("password") String password,
-            @RequestPart("userPhoto") MultipartFile userPhoto
+            @RequestPart("userPhoto") MultipartFile userPhoto,
+            @RequestParam("telephone") String telephone,
+            @RequestParam("pays") String pays
     ) {
 
         AppUser appUser = new AppUser();
         appUser.setFullname(fullname);
         appUser.setEmail(email);
         appUser.setPassword(password);
+        appUser.setTelephone(telephone);
+        appUser.setPays(pays);
 
         try {
             // Save or process the file
@@ -72,7 +72,7 @@ public class AccountRestController {
 
     @PostMapping(path = "/addRoleToUser")
     public void addRoleToUser(@RequestBody RoleUserForme roleUserForme) {
-        accountService.addRoleToUser(roleUserForme.getRoleName(), roleUserForme.getEmail());
+        accountService.addRoleToUser("USER", roleUserForme.getEmail());
     }
 
     @GetMapping(path = "/refreshToken")
@@ -116,6 +116,7 @@ public class AccountRestController {
     }
 
 }
+
 
 class RoleUserForme {
     private String roleName;

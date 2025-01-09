@@ -45,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public AppUser getUserbyEmail(String email) {
         AppUser appUser = appUserRepository.findByEmail(email);
-        appUser.getAppRoles().size();  // Ensure roles are loaded
+        appUser.getAppRoles().size();
         return appUser;
     }
 

@@ -32,6 +32,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -78,7 +79,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                //config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedMethods(Collections.singletonList("*"));
+                //config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
                 config.setAllowCredentials(true);
                 config.setAllowedHeaders(Collections.singletonList("*"));
                 config.setMaxAge(3600L);
@@ -91,11 +94,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .authorizeRequests().antMatchers("/h2-console/**","/refreshToken/**","/login/**","/users/createUser/**","/addRoleToUser/**").permitAll()
                     .and()
-                /*.authorizeRequests().antMatchers(HttpMethod.POST,"/users/**").hasAuthority("ADMIN")
-                    .and()
-                .authorizeRequests().antMatchers(HttpMethod.GET,"/users/**").hasAuthority("USER")
-                    .and()
-                 */
                 .authorizeRequests().anyRequest().authenticated()
                     .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManagerBean()))
@@ -110,40 +108,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-
-    /*
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
-        return authenticationManagerBuilder.build();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter();
-        jwtAuthenticationFilter.setAuthenticationManager(authenticationManager(http));  // Inject AuthenticationManager
-
-        http.csrf(csrf -> csrf.disable());
-        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
-
-        // Define allowed paths and authentication rules
-        http.authorizeRequests(authorizeRequests ->
-                authorizeRequests
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .anyRequest().authenticated()
-        );
-
-        // Add JWT filter for authentication
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
-
-     */
 
     @Bean
     public PasswordEncoder passwordEncoder() {
