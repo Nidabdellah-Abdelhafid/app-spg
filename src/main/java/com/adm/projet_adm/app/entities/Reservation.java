@@ -5,11 +5,9 @@ import java.util.Date;
 
 import com.adm.projet_adm.security.entities.AppUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Data
 public class Reservation {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

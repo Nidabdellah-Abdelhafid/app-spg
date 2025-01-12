@@ -2,13 +2,12 @@ package com.adm.projet_adm.app.entities;
 
 import com.adm.projet_adm.security.entities.AppUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Data;
+
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Data
 public class Message {
 
     @Id

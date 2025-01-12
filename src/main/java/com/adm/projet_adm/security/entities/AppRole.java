@@ -1,11 +1,9 @@
 package com.adm.projet_adm.security.entities;
 
-import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 public class AppRole {
 
     @Id

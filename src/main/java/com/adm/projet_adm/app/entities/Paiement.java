@@ -5,12 +5,11 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
+
 
 import javax.persistence.*;
 
 @Entity
-@Data
 public class Paiement {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

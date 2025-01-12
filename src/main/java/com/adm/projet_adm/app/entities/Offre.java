@@ -2,7 +2,7 @@ package com.adm.projet_adm.app.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Data
 public class Offre {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

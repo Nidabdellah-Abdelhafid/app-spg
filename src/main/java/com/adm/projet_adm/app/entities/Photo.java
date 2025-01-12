@@ -3,12 +3,11 @@ package com.adm.projet_adm.app.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 
 @Entity
-@Data
 public class Photo {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

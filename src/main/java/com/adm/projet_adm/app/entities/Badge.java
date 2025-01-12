@@ -3,14 +3,12 @@ package com.adm.projet_adm.app.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
 
 @Entity
-@Data
 public class Badge {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

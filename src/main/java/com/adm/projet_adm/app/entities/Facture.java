@@ -2,11 +2,9 @@ package com.adm.projet_adm.app.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Data
 public class Facture {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

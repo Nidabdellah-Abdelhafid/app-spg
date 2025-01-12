@@ -3,7 +3,6 @@ package com.adm.projet_adm.app.entities;
 
 import com.adm.projet_adm.security.entities.AppUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@Data
 public class Pays {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
