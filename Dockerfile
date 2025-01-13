@@ -1,5 +1,5 @@
 # Use official openjdk image
-FROM openjdk:17-jre-slim
+FROM openjdk:25-slim-bullseye
 
 # Set working directory
 WORKDIR /app
