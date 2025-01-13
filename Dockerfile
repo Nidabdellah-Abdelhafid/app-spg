@@ -5,7 +5,7 @@ FROM openjdk:25-slim-bullseye
 WORKDIR /app
 
 # Copy the JAR file from target folder
-COPY target/projet_adm-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY projet_adm-0.0.1-SNAPSHOT.jar /app/app.jar
 
 # Expose port 8080
 EXPOSE 8080
