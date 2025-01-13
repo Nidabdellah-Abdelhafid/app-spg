@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -40,11 +42,14 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
+@PropertySource("classpath:application.properties")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Lazy
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private Environment environment;
 
 
     @Override
@@ -79,7 +84,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration config = new CorsConfiguration();
                 //config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
-                config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://192.168.11.101"));
+                String[] allowedOrigins = environment.getProperty("cors.allowedOrigins", String.class, "").split(",");
+                config.setAllowedOrigins(Arrays.asList(allowedOrigins));
                 //config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedMethods(Collections.singletonList("*"));
                 //config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
