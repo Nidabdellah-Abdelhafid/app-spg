@@ -1,6 +1,5 @@
 package com.adm.projet_adm.app.controllers;
 
-import com.adm.projet_adm.app.entities.Pays;
 import com.adm.projet_adm.app.entities.Planing;
 import com.adm.projet_adm.app.entities.Programme;
 import com.adm.projet_adm.app.repositories.PlaningRepository;
@@ -8,9 +7,11 @@ import com.adm.projet_adm.app.services.ProgrammeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+import org.springframework.http.ResponseEntity;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/programmes")
@@ -37,8 +38,19 @@ public class ProgrammeController {
 
     @GetMapping
     @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public List<Programme> getAll() {
-        return programmeService.findAll();
+    public ResponseEntity<List<Map<String, Object>>> getAll() {
+        List<Programme> programmes = programmeService.findAll();
+        List<Map<String, Object>> response = programmes.stream().map(programme -> {
+            Map<String, Object> programmeMap = new HashMap<>();
+            programmeMap.put("id", programme.getId());
+            programmeMap.put("label", programme.getLabel());
+            programmeMap.put("heure", programme.getHeure());
+            programmeMap.put("description", programme.getDescription());
+            programmeMap.put("planing_programmes", programme.getPlaning_programmes());
+            return programmeMap;
+        }).collect(Collectors.toList());
+        
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")

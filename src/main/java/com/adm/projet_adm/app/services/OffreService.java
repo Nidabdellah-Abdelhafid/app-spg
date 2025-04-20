@@ -65,6 +65,5 @@ public class OffreService {
             Badge badgeById = badgeRepository.findBadgesById(badge.getId());
             offreById.getBadges().add(badgeById);
         }
-
     }
 }

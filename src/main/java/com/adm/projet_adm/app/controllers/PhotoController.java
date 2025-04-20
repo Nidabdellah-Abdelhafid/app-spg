@@ -8,14 +8,11 @@ import com.adm.projet_adm.app.repositories.PaysRepository;
 import com.adm.projet_adm.app.repositories.PlaningRepository;
 import com.adm.projet_adm.app.repositories.ProgrammeRepository;
 import com.adm.projet_adm.app.services.PhotoService;
-import com.adm.projet_adm.app.services.PlaningService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping( "/api/photos")

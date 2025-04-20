@@ -9,9 +9,13 @@ import com.adm.projet_adm.app.services.OffreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.http.ResponseEntity;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/offres")
@@ -37,8 +41,24 @@ public class OffreController {
 
     @GetMapping
     @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public List<Offre> getAll() {
-        return offreService.findAll();
+    public ResponseEntity<List<Map<String, Object>>> getAll() {
+        List<Offre> offres = offreService.findAll();
+        List<Map<String, Object>> response = offres.stream().map(offre -> {
+            Map<String, Object> offreMap = new HashMap<>();
+            offreMap.put("id", offre.getId());
+            offreMap.put("label", offre.getLabel());
+            offreMap.put("description", offre.getDescription());
+            offreMap.put("price", offre.getPrice());
+            offreMap.put("image", offre.getImage());
+            offreMap.put("latitude", offre.getLatitude());
+            offreMap.put("longitude", offre.getLongitude());
+            offreMap.put("pays", offre.getPays());
+            offreMap.put("themes", new ArrayList<>(offre.getThemes()));
+            offreMap.put("badges", new ArrayList<>(offre.getBadges()));
+            return offreMap;
+        }).collect(Collectors.toList());
+        
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
@@ -73,6 +93,41 @@ public class OffreController {
 
         offreService.addBadgeToOffre(badgeOffreForme.getOffre(),badgeOffreForme.getBadge());
     }
+
+     @GetMapping("/{id}/badges")
+    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<?> getOffreBadges(@PathVariable Long id) {
+        try {
+            Offre offre = offreService.findById(id);
+            System.out.println("offre by "+offre);
+            if (offre == null) {
+                return ResponseEntity.notFound().build();
+            }
+            List<Badge> badges = new ArrayList<>(offre.getBadges());
+            return ResponseEntity.ok(badges);
+        } catch (Exception e) {
+            System.err.println("Error fetching badges for offre " + id + ": " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Error fetching badges");
+        }
+    }
+
+    @GetMapping("/{id}/themes")
+    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<?> getOffreThemes(@PathVariable Long id) {
+        try {
+            Offre offre = offreService.findById(id);
+            System.out.println("offre by"+offre);
+            if (offre == null) {
+                return ResponseEntity.notFound().build();
+            }
+            List<Theme> themes = new ArrayList<>(offre.getThemes());
+            return ResponseEntity.ok(themes);
+        } catch (Exception e) {
+            System.err.println("Error fetching themes for offre " + id + ": " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Error fetching themes");
+        }
+    }
+    
 }
 
 
