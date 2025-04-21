@@ -15,7 +15,20 @@ public class Message {
     private Long id;
 
     private Date date;
+    
     private String contenu;
+    
+    @Enumerated(EnumType.STRING)
+    private MessageType messageType;
+    
+    private String mediaUrl;
+    
+    private String mediaType;
+    
+    private String fileName;
+    
+    private Long fileSize;
+    
     private Boolean status;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -28,7 +41,73 @@ public class Message {
     @JoinColumn(name = "receiver_id")
     private AppUser receiver;
 
+    public enum MessageType {
+        TEXT,
+        IMAGE,
+        VIDEO,
+        AUDIO,
+        DOCUMENT
+    }
 
+    // Add getters and setters for new fields
+    public MessageType getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(MessageType messageType) {
+        this.messageType = messageType;
+    }
+
+    public String getMediaUrl() {
+        return mediaUrl;
+    }
+
+    public void setMediaUrl(String mediaUrl) {
+        this.mediaUrl = mediaUrl;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(Long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    // Update constructor
+    public Message(Long id, Date date, String contenu, MessageType messageType, 
+                  String mediaUrl, String mediaType, String fileName, Long fileSize,
+                  Boolean status, AppUser sender, AppUser receiver) {
+        this.id = id;
+        this.date = date;
+        this.contenu = contenu;
+        this.messageType = messageType;
+        this.mediaUrl = mediaUrl;
+        this.mediaType = mediaType;
+        this.fileName = fileName;
+        this.fileSize = fileSize;
+        this.status = status;
+        this.sender = sender;
+        this.receiver = receiver;
+    }
+
+    // Default constructor
     public Message() {
     }
 
@@ -77,15 +156,6 @@ public class Message {
     }
 
     public void setReceiver(AppUser receiver) {
-        this.receiver = receiver;
-    }
-
-    public Message(Long id, Date date, String contenu, Boolean status, AppUser sender, AppUser receiver) {
-        this.id = id;
-        this.date = date;
-        this.contenu = contenu;
-        this.status = status;
-        this.sender = sender;
         this.receiver = receiver;
     }
 }

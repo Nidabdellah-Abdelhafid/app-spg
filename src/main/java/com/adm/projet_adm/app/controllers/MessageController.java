@@ -1,13 +1,21 @@
 package com.adm.projet_adm.app.controllers;
 
 import com.adm.projet_adm.app.entities.Message;
+import com.adm.projet_adm.app.services.FileStorageService;
 import com.adm.projet_adm.app.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/api/messages")
@@ -16,16 +24,103 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    @PostMapping
-    @PostAuthorize("hasAuthority('ADMIN')")
-    public Message create(@RequestBody Message message) {
-        return messageService.save(message);
-    }
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    
     @GetMapping
     @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public List<Message> getAll() {
-        return messageService.findAll();
+    public ResponseEntity<List<Map<String, Object>>> getAll() {
+        try {
+            List<Message> messages = messageService.findAll();
+            List<Map<String, Object>> response = messages.stream().map(message -> {
+                Map<String, Object> messageMap = new HashMap<>();
+                messageMap.put("id", message.getId());
+                messageMap.put("contenu", message.getContenu());
+                messageMap.put("date", message.getDate());
+                messageMap.put("messageType", message.getMessageType());
+                messageMap.put("mediaUrl", message.getMediaUrl());
+                messageMap.put("mediaType", message.getMediaType());
+                messageMap.put("fileName", message.getFileName());
+                messageMap.put("fileSize", message.getFileSize());
+                messageMap.put("status", message.getStatus());
+                
+                // Map sender details
+                if (message.getSender() != null) {
+                    Map<String, Object> senderMap = new HashMap<>();
+                    senderMap.put("id", message.getSender().getId());
+                    senderMap.put("email", message.getSender().getEmail());
+                    senderMap.put("fullName", message.getSender().getFullname());
+                    senderMap.put("userPhoto", message.getSender().getUserPhoto());
+                    messageMap.put("sender", senderMap);
+                }
+                
+                // Map receiver details
+                if (message.getReceiver() != null) {
+                    Map<String, Object> receiverMap = new HashMap<>();
+                    receiverMap.put("id", message.getReceiver().getId());
+                    receiverMap.put("email", message.getReceiver().getEmail());
+                    receiverMap.put("userPhoto", message.getSender().getUserPhoto());
+                    receiverMap.put("fullname", message.getReceiver().getFullname());
+                    messageMap.put("receiver", receiverMap);
+                }
+                
+                return messageMap;
+            }).collect(Collectors.toList());
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+    }
+    
+
+    @PostMapping
+    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<?> create(@RequestParam(value = "file", required = false) MultipartFile file,
+                                  @RequestParam("message") String messageStr) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Message message = mapper.readValue(messageStr, Message.class);
+            message.setDate(new Date());
+            
+            if (file != null) {
+            
+            String mediaUrl = fileStorageService.storeFile(file);
+                message.setMediaUrl(mediaUrl);
+                message.setFileName(file.getOriginalFilename());
+                message.setFileSize(file.getSize());
+                message.setMediaType(file.getContentType());
+                message.setMessageType(determineMessageType(file.getContentType()));
+            } else {
+                message.setMessageType(Message.MessageType.TEXT);
+            }
+
+            Message savedMessage = messageService.save(message);
+            
+            // Send real-time notification
+            messagingTemplate.convertAndSendToUser(
+                savedMessage.getReceiver().getEmail(),
+                "/queue/messages",
+                savedMessage
+            );
+
+            return ResponseEntity.ok(savedMessage);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error creating message: " + e.getMessage());
+        }
+    }
+
+    private Message.MessageType determineMessageType(String contentType) {
+        if (contentType.startsWith("image/")) return Message.MessageType.IMAGE;
+        if (contentType.startsWith("video/")) return Message.MessageType.VIDEO;
+        if (contentType.startsWith("audio/")) return Message.MessageType.AUDIO;
+        return Message.MessageType.DOCUMENT;
     }
 
     @GetMapping("/{id}")

@@ -1,10 +1,8 @@
 package com.adm.projet_adm.security;
 
-import com.adm.projet_adm.security.CustomUserDetailsService;
 import com.adm.projet_adm.security.entities.AppUser;
 import com.adm.projet_adm.security.jwt.JwtAuthenticationFilter;
 import com.adm.projet_adm.security.jwt.JwtAuthorizationFilter;
-import com.adm.projet_adm.security.repositories.AppUserRepository;
 import com.adm.projet_adm.security.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,7 +21,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 
 @Configuration
@@ -100,7 +95,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                     .and()
                 .authorizeRequests().antMatchers("/h2-console/**","/refreshToken/**","/login/**","/users/createUser/**","/addRoleToUser/**").permitAll()
-                    .and()
+                .antMatchers("/ws/**").permitAll()  // Allow WebSocket connections
+                .antMatchers("/topic/**", "/queue/**").authenticated()    
+                .and()
                 .authorizeRequests().anyRequest().authenticated()
                     .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManagerBean()))
