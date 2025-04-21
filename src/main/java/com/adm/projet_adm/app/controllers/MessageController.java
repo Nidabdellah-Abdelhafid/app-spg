@@ -5,6 +5,7 @@ import com.adm.projet_adm.app.services.FileStorageService;
 import com.adm.projet_adm.app.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,9 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.adm.projet_adm.security.services.AccountService;
+import com.adm.projet_adm.security.entities.AppUser;
 
 @RestController
 @RequestMapping("/api/messages")
@@ -30,6 +34,8 @@ public class MessageController {
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    private AccountService accountService; 
     
     @GetMapping
     @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
@@ -81,17 +87,34 @@ public class MessageController {
     
 
     @PostMapping
-    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<?> create(@RequestParam(value = "file", required = false) MultipartFile file,
                                   @RequestParam("message") String messageStr) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Message message = mapper.readValue(messageStr, Message.class);
+            JsonNode messageNode = mapper.readTree(messageStr);
+            
+            Message message = new Message();
+            message.setContenu(messageNode.get("contenu").asText());
             message.setDate(new Date());
+            message.setStatus(false);
+            
+            // Get sender and receiver emails directly from the JSON
+            String senderEmail = messageNode.get("sender").asText();
+            String receiverEmail = messageNode.get("receiver").asText();
+            
+            AppUser sender = accountService.getUserbyEmail(senderEmail);
+            AppUser receiver = accountService.getUserbyEmail(receiverEmail);
+            
+            if (sender == null || receiver == null) {
+                return ResponseEntity.badRequest().body("Invalid sender or receiver email");
+            }
+            
+            message.setSender(sender);
+            message.setReceiver(receiver);
             
             if (file != null) {
-            
-            String mediaUrl = fileStorageService.storeFile(file);
+                String mediaUrl = fileStorageService.storeFile(file);
                 message.setMediaUrl(mediaUrl);
                 message.setFileName(file.getOriginalFilename());
                 message.setFileSize(file.getSize());
@@ -103,7 +126,6 @@ public class MessageController {
 
             Message savedMessage = messageService.save(message);
             
-            // Send real-time notification
             messagingTemplate.convertAndSendToUser(
                 savedMessage.getReceiver().getEmail(),
                 "/queue/messages",
