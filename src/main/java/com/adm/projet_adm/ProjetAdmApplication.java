@@ -22,7 +22,6 @@ public class ProjetAdmApplication {
         return args -> {
             accountService.addRole(new AppRole(1L,"ADMIN"));
             accountService.addRole(new AppRole(2L,"USER"));
-
         };
     }
 }
