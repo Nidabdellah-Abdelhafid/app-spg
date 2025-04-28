@@ -39,7 +39,13 @@ public class AccountServiceImpl implements AccountService {
     public void addRoleToUser(String roleName, String email) {
         AppUser appUser = appUserRepository.findByEmail(email);
         AppRole appRole = appRoleRepository.findByRoleName(roleName);
-        appUser.getAppRoles().add(appRole);
+        
+        boolean hasRole = appUser.getAppRoles().stream()
+                .anyMatch(role -> role.getRoleName().equals(roleName));
+                
+        if (!hasRole) {
+            appUser.getAppRoles().add(appRole);
+        }
     }
 
     @Transactional
