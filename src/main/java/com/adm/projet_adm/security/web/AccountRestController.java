@@ -8,6 +8,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import java.util.Base64;
 
 @RestController
 public class AccountRestController {
@@ -115,6 +119,34 @@ public class AccountRestController {
         return accountService.getUserbyEmail(principal.getName());
     }
 
+    @PutMapping("/profile/{id}")
+    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<AppUser> updateProfile(
+            @PathVariable Long id,
+            @RequestBody AppUser updatedUser,
+            Principal principal) {
+        try {
+            AppUser currentUser = accountService.getUserbyEmail(principal.getName());
+            
+            if (currentUser.getId() != id) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+            
+            currentUser.setFullname(updatedUser.getFullname());
+            currentUser.setTelephone(updatedUser.getTelephone());
+            currentUser.setPays(updatedUser.getPays());
+            
+            if (updatedUser.getUserPhoto() != null) {
+                currentUser.setUserPhoto(updatedUser.getUserPhoto());
+            }
+            
+            AppUser savedUser = accountService.updateUser(currentUser);
+            return ResponseEntity.ok(savedUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
 
 

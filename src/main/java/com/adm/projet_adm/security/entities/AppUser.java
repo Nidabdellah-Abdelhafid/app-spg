@@ -36,7 +36,7 @@ public class AppUser {
     @ManyToMany(fetch = FetchType.EAGER )
     private Collection<AppRole> appRoles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "appUser_reservations", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "appUser_reservations")
     @JsonBackReference("appUser-reservation")
     private Collection<Reservation> reservations = new ArrayList<>();
 
@@ -48,11 +48,11 @@ public class AppUser {
     @JsonBackReference("appUser-pays")
     private Collection<Pays> pays_favs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sender")
     @JsonBackReference("appUser-sentMessages")
     private Collection<Message> sentMessages = new ArrayList<>(); // Messages where the user is the sender
 
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "receiver")
     @JsonBackReference("appUser-receivedMessages")
     private Collection<Message> receivedMessages = new ArrayList<>(); // Messages where the user is the receiver
 
