@@ -28,6 +28,18 @@ public class Pays {
     private String monnaieLocale;
     private String langueParlee;
     private boolean vaccinsNecessaires;
+    private Integer january;
+    private Integer february;
+    private Integer march;
+    private Integer april;
+    private Integer may;
+    private Integer june;
+    private Integer july;
+    private Integer august;
+    private Integer september;
+    private Integer october;
+    private Integer november;
+    private Integer december;
 
     @OneToMany(mappedBy = "pays_offres", fetch = FetchType.EAGER)
     @JsonBackReference("pays-offres")
@@ -191,10 +203,49 @@ public class Pays {
         this.mapImage = mapImage;
     }
 
+    public Integer getJanuary() { return january; }
+    public void setJanuary(Integer january) { this.january = january; }
+    
+    public Integer getFebruary() { return february; }
+    public void setFebruary(Integer february) { this.february = february; }
+    
+    public Integer getMarch() { return march; }
+    public void setMarch(Integer march) { this.march = march; }
+    
+    public Integer getApril() { return april; }
+    public void setApril(Integer april) { this.april = april; }
+    
+    public Integer getMay() { return may; }
+    public void setMay(Integer may) { this.may = may; }
+    
+    public Integer getJune() { return june; }
+    public void setJune(Integer june) { this.june = june; }
+    
+    public Integer getJuly() { return july; }
+    public void setJuly(Integer july) { this.july = july; }
+    
+    public Integer getAugust() { return august; }
+    public void setAugust(Integer august) { this.august = august; }
+    
+    public Integer getSeptember() { return september; }
+    public void setSeptember(Integer september) { this.september = september; }
+    
+    public Integer getOctober() { return october; }
+    public void setOctober(Integer october) { this.october = october; }
+    
+    public Integer getNovember() { return november; }
+    public void setNovember(Integer november) { this.november = november; }
+    
+    public Integer getDecember() { return december; }
+    public void setDecember(Integer december) { this.december = december; }
+
     public Pays(String description, Long id, String image, String mapImage, String continent, 
                 Float latitude, Float longitude, String label, int reviews, 
                 boolean visa, String dureeDuVol, String heureLocale, 
                 String monnaieLocale, String langueParlee, boolean vaccinsNecessaires,
+                Integer january, Integer february, Integer march, Integer april,
+                Integer may, Integer june, Integer july, Integer august,
+                Integer september, Integer october, Integer november, Integer december,
                 Collection<Offre> offres, Collection<Photo> photos, Collection<AppUser> appUsers) {
         this.description = description;
         this.id = id;
@@ -214,6 +265,18 @@ public class Pays {
         this.offres = offres;
         this.photos = photos;
         this.appUsers = appUsers;
+        this.january = january;
+        this.february = february;
+        this.march = march;
+        this.april = april;
+        this.may = may;
+        this.june = june;
+        this.july = july;
+        this.august = august;
+        this.september = september;
+        this.october = october;
+        this.november = november;
+        this.december = december;
     }
 
 }
