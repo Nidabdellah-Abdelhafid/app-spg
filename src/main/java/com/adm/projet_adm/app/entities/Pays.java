@@ -15,12 +15,19 @@ public class Pays {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String image;
+    private String mapImage;
     private String description;
     private String continent;
     private Float latitude;
     private Float longitude;
     private String label;
     private int reviews;
+    private boolean visa;
+    private String dureeDuVol;
+    private String heureLocale;
+    private String monnaieLocale;
+    private String langueParlee;
+    private boolean vaccinsNecessaires;
 
     @OneToMany(mappedBy = "pays_offres", fetch = FetchType.EAGER)
     @JsonBackReference("pays-offres")
@@ -128,15 +135,82 @@ public class Pays {
         this.image = image;
     }
 
-    public Pays(String description, Long id,String image, String continent, Float latitude, Float longitude, String label, int reviews, Collection<Offre> offres, Collection<Photo> photos, Collection<AppUser> appUsers) {
+    public boolean isVisa() {
+        return visa;
+    }
+
+    public void setVisa(boolean visa) {
+        this.visa = visa;
+    }
+
+    public String getDureeDuVol() {
+        return dureeDuVol;
+    }
+
+    public void setDureeDuVol(String dureeDuVol) {
+        this.dureeDuVol = dureeDuVol;
+    }
+
+    public String getHeureLocale() {
+        return heureLocale;
+    }
+
+    public void setHeureLocale(String heureLocale) {
+        this.heureLocale = heureLocale;
+    }
+
+    public String getMonnaieLocale() {
+        return monnaieLocale;
+    }
+
+    public void setMonnaieLocale(String monnaieLocale) {
+        this.monnaieLocale = monnaieLocale;
+    }
+
+    public String getLangueParlee() {
+        return langueParlee;
+    }
+
+    public void setLangueParlee(String langueParlee) {
+        this.langueParlee = langueParlee;
+    }
+
+    public boolean isVaccinsNecessaires() {
+        return vaccinsNecessaires;
+    }
+
+    public void setVaccinsNecessaires(boolean vaccinsNecessaires) {
+        this.vaccinsNecessaires = vaccinsNecessaires;
+    }
+
+    public String getMapImage() {
+        return mapImage;
+    }
+
+    public void setMapImage(String mapImage) {
+        this.mapImage = mapImage;
+    }
+
+    public Pays(String description, Long id, String image, String mapImage, String continent, 
+                Float latitude, Float longitude, String label, int reviews, 
+                boolean visa, String dureeDuVol, String heureLocale, 
+                String monnaieLocale, String langueParlee, boolean vaccinsNecessaires,
+                Collection<Offre> offres, Collection<Photo> photos, Collection<AppUser> appUsers) {
         this.description = description;
         this.id = id;
         this.image = image;
+        this.mapImage = mapImage;
         this.continent = continent;
         this.latitude = latitude;
         this.longitude = longitude;
         this.label = label;
         this.reviews = reviews;
+        this.visa = visa;
+        this.dureeDuVol = dureeDuVol;
+        this.heureLocale = heureLocale;
+        this.monnaieLocale = monnaieLocale;
+        this.langueParlee = langueParlee;
+        this.vaccinsNecessaires = vaccinsNecessaires;
         this.offres = offres;
         this.photos = photos;
         this.appUsers = appUsers;

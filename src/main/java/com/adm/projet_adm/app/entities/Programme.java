@@ -77,7 +77,8 @@ public class Programme {
     }
 
 
-    public Programme(Long id, Planing planing_programmes, Collection<Photo> photos, String description, String label, String heure) {
+    public Programme(Long id, Planing planing_programmes, Collection<Photo> photos, 
+                    String description, String label, String heure) {
         this.id = id;
         this.planing_programmes = planing_programmes;
         this.photos = photos;

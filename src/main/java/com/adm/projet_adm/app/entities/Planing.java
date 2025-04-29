@@ -11,6 +11,7 @@ public class Planing {
     private String label;
     private String description;
     private int jourNumero;
+    private String mapPlaningImage;
 
     @OneToMany(mappedBy = "planing_programmes", fetch = FetchType.LAZY)
     @JsonBackReference("planing-programme")
@@ -88,11 +89,23 @@ public class Planing {
         this.offre_planings = offre;
     }
 
-    public Planing(Long id, String label, String description, int jourNumero, Collection<Photo> photos, Collection<Programme> programmes, Offre offre_planings) {
+    public String getMapPlaningImage() {
+        return mapPlaningImage;
+    }
+
+    public void setMapPlaningImage(String mapPlaningImage) {
+        this.mapPlaningImage = mapPlaningImage;
+    }
+
+    // Update constructor
+    public Planing(Long id, String label, String description, int jourNumero, 
+                  String mapPlaningImage, Collection<Photo> photos, 
+                  Collection<Programme> programmes, Offre offre_planings) {
         this.id = id;
         this.label = label;
         this.description = description;
         this.jourNumero = jourNumero;
+        this.mapPlaningImage = mapPlaningImage;
         this.photos = photos;
         this.programmes = programmes;
         this.offre_planings = offre_planings;
