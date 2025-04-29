@@ -52,6 +52,7 @@ public class OffreController {
             offreMap.put("image", offre.getImage());
             offreMap.put("latitude", offre.getLatitude());
             offreMap.put("longitude", offre.getLongitude());
+            offreMap.put("offreDayNumber", offre.getOffreDayNumber());
             offreMap.put("pays", offre.getPays());
             offreMap.put("themes", new ArrayList<>(offre.getThemes()));
             offreMap.put("badges", new ArrayList<>(offre.getBadges()));

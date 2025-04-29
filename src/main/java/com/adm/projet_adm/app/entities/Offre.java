@@ -21,6 +21,7 @@ public class Offre {
     private String image;
     private Float latitude;
     private Float longitude;
+    private Integer offreDayNumber;
 
     @OneToMany(mappedBy = "offre_planings", fetch = FetchType.LAZY)
     @JsonBackReference("offre-planings")
@@ -141,8 +142,19 @@ public class Offre {
     public void setBadges(Collection<Badge> badges) {
         this.badges = badges;
     }
+public Integer getOffreDayNumber() {
+        return offreDayNumber;
+    }
 
-    public Offre(Long id, String label, String description, Float price, String image, Float latitude, Float longitude, Collection<Planing> planings, Collection<Reservation> reservations, Pays pays_offres, Collection<Theme> themes, Collection<Badge> badges) {
+    public void setOffreDayNumber(Integer offreDayNumber) {
+        this.offreDayNumber = offreDayNumber;
+    }
+
+    // Update constructor
+    public Offre(Long id, String label, String description, Float price, String image, 
+                Float latitude, Float longitude, Integer offreDayNumber, Collection<Planing> planings, 
+                Collection<Reservation> reservations, Pays pays_offres, 
+                Collection<Theme> themes, Collection<Badge> badges) {
         this.id = id;
         this.label = label;
         this.description = description;
@@ -150,6 +162,7 @@ public class Offre {
         this.image = image;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.offreDayNumber = offreDayNumber;
         this.planings = planings;
         this.reservations = reservations;
         this.pays_offres = pays_offres;
