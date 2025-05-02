@@ -10,7 +10,9 @@ public class Blog {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    private String subTitle;
     private String imageUrl;
+    @Column(length = 1000)
     private String description;
 
     @OneToMany(mappedBy = "blog", fetch = FetchType.LAZY)
@@ -33,6 +35,14 @@ public class Blog {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
     }
 
     public String getImageUrl() {
@@ -59,9 +69,10 @@ public class Blog {
         this.blogContents = blogContents;
     }
 
-    public Blog(Long id, String title, String imageUrl, String description, Collection<BlogContent> blogContents) {
+    public Blog(Long id, String title, String subTitle, String imageUrl, String description, Collection<BlogContent> blogContents) {
         this.id = id;
         this.title = title;
+        this.subTitle = subTitle;
         this.imageUrl = imageUrl;
         this.description = description;
         this.blogContents = blogContents;

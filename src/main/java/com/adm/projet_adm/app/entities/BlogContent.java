@@ -9,11 +9,11 @@ public class BlogContent {
     private Long id;
     private String title;
     private String imageUrl;
-    @Column(length = 10000)
+    @Column(length = 1000)
     private String paragraph1;
-    @Column(length = 10000)
+    @Column(length = 1000)
     private String paragraph2;
-    @Column(length = 10000)
+    @Column(length = 1000)
     private String paragraph3;
 
     @ManyToOne(fetch = FetchType.EAGER)

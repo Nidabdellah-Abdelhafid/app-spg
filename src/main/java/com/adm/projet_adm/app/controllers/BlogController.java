@@ -5,7 +5,10 @@ import com.adm.projet_adm.app.services.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.http.ResponseEntity;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 import java.util.List;
 
 @RestController
@@ -23,8 +26,20 @@ public class BlogController {
 
     @GetMapping
     @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public List<Blog> getAll() {
-        return blogService.findAll();
+    public ResponseEntity<List<Map<String, Object>>> getAll() {
+        List<Blog> blogs = blogService.findAll();
+        List<Map<String, Object>> response = blogs.stream().map(blog -> {
+            Map<String, Object> blogMap = new HashMap<>();
+            blogMap.put("id", blog.getId());
+            blogMap.put("title", blog.getTitle());
+            blogMap.put("subTitle", blog.getSubTitle());
+            blogMap.put("imageUrl", blog.getImageUrl());
+            blogMap.put("description", blog.getDescription());
+            blogMap.put("blogContents", blog.getBlogContents());
+            return blogMap;
+        }).collect(Collectors.toList());
+        
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
