@@ -66,7 +66,6 @@ public class AccountServiceImpl implements AccountService {
             AppUser existingUser = appUserRepository.findById(updatedUser.getId());
             if (existingUser != null) {
                 // Update only allowed fields
-            // System.out.println("user :" + updatedUser);
             existingUser.setFullname(updatedUser.getFullname());
             existingUser.setTelephone(updatedUser.getTelephone());
             existingUser.setPays(updatedUser.getPays());

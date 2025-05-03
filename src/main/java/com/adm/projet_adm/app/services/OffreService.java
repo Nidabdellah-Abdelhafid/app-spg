@@ -43,10 +43,14 @@ public class OffreService {
 
     public Offre update(Long id, Offre offre) {
         if (offreRepository.existsById(id)) {
+            Offre existingOffre = offreRepository.findOffreById(id);
             offre.setId(id);
+            
+            offre.setThemes(existingOffre.getThemes());
+            offre.setBadges(existingOffre.getBadges());
             return offreRepository.save(offre);
         }
-        return null; // or throw an exception if needed
+        return null;
     }
 
     @Transactional
