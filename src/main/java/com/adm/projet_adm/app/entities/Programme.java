@@ -13,6 +13,7 @@ public class Programme {
     private Long id;
     private String heure;
     private String label;
+    @Column(length = 1000)
     private String description;
 
     @OneToMany(mappedBy = "programme_photos", fetch = FetchType.EAGER)

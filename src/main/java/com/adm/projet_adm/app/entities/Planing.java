@@ -9,6 +9,7 @@ public class Planing {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String label;
+    @Column(length = 1000)
     private String description;
     private int jourNumero;
     private String mapPlaningImage;

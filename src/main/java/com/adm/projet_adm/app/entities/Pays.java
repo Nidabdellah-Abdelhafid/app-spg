@@ -3,9 +3,6 @@ package com.adm.projet_adm.app.entities;
 
 import com.adm.projet_adm.security.entities.AppUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +13,7 @@ public class Pays {
     private Long id;
     private String image;
     private String mapImage;
+    @Column(length = 1000)
     private String description;
     private String continent;
     private Float latitude;

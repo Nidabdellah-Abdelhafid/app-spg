@@ -16,6 +16,7 @@ public class Offre {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String label;
+    @Column(length = 1000)
     private String description;
     private Float price;
     private String image;
