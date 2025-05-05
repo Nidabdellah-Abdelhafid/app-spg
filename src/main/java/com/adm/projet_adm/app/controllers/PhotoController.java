@@ -66,7 +66,7 @@ public class PhotoController {
     }
 
     @GetMapping
-    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    // @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
     public List<Photo> getAll() {
         return photoService.findAll();
     }

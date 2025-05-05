@@ -37,7 +37,7 @@ public class ProgrammeController {
     }
 
     @GetMapping
-    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    // @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<List<Map<String, Object>>> getAll() {
         List<Programme> programmes = programmeService.findAll();
         List<Map<String, Object>> response = programmes.stream().map(programme -> {

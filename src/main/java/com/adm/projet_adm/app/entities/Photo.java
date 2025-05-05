@@ -5,12 +5,12 @@ package com.adm.projet_adm.app.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 
 @Entity
 public class Photo {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 1000)
     private String url;
 
     @ManyToOne(fetch = FetchType.EAGER)

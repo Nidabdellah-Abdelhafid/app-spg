@@ -25,7 +25,7 @@ public class BlogController {
     }
 
     @GetMapping
-    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    // @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<List<Map<String, Object>>> getAll() {
         List<Blog> blogs = blogService.findAll();
         List<Map<String, Object>> response = blogs.stream().map(blog -> {

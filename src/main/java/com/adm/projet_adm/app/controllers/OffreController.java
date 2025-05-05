@@ -40,7 +40,7 @@ public class OffreController {
     }
 
     @GetMapping
-    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    // @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<List<Map<String, Object>>> getAll() {
         List<Offre> offres = offreService.findAll();
         List<Map<String, Object>> response = offres.stream().map(offre -> {

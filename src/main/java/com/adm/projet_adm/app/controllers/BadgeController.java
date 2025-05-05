@@ -22,7 +22,7 @@ public class BadgeController {
     }
 
     @GetMapping
-    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    // @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
     public List<Badge> getAll() {
         return badgeService.findAll();
     }

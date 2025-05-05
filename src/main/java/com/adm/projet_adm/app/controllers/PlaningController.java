@@ -34,7 +34,7 @@ public class PlaningController {
     }
 
     @GetMapping
-    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    // @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
     public List<Planing> getAll() {
         return planingService.findAll();
     }

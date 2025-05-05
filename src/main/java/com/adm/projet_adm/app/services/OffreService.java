@@ -58,7 +58,13 @@ public class OffreService {
         if (offreRepository.existsById(offre.getId()) && themeRepository.existsById(theme.getId())) {
             Offre offreById = offreRepository.findOffreById(offre.getId());
             Theme themeById = themeRepository.findThemeById(theme.getId());
-            offreById.getThemes().add(themeById);
+            
+            boolean hasTheme = offreById.getThemes().stream()
+                    .anyMatch(t -> t.getId().equals(themeById.getId()));
+                    
+            if (!hasTheme) {
+                offreById.getThemes().add(themeById);
+            }
         }
     }
 
@@ -67,7 +73,13 @@ public class OffreService {
         if (offreRepository.existsById(offre.getId()) && badgeRepository.existsById(badge.getId())) {
             Offre offreById = offreRepository.findOffreById(offre.getId());
             Badge badgeById = badgeRepository.findBadgesById(badge.getId());
-            offreById.getBadges().add(badgeById);
+            
+            boolean hasBadge = offreById.getBadges().stream()
+                    .anyMatch(b -> b.getId().equals(badgeById.getId()));
+                    
+            if (!hasBadge) {
+                offreById.getBadges().add(badgeById);
+            }
         }
     }
 }

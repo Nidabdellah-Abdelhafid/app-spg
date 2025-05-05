@@ -22,7 +22,7 @@ public class ThemeController {
     }
 
     @GetMapping
-    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    // @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
     public List<Theme> getAll() {
         return themeService.findAll();
     }

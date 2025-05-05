@@ -23,7 +23,7 @@ public class PaysController {
     }
 
     @GetMapping
-    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    // @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
     public List<Pays> getAll() {
         return paysService.findAll();
     }
