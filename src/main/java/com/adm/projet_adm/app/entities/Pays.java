@@ -19,6 +19,8 @@ public class Pays {
     private Float latitude;
     private Float longitude;
     private String label;
+    private String subTitle;
+    private String imageDes;
     private int reviews;
     private boolean visa;
     private String dureeDuVol;
@@ -237,8 +239,23 @@ public class Pays {
     public Integer getDecember() { return december; }
     public void setDecember(Integer december) { this.december = december; }
 
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+    }
+    public String getImageDes() {
+        return imageDes;
+    }
+
+    public void setImageDes(String imageDes) {
+        this.imageDes = imageDes;
+    }
+
     public Pays(String description, Long id, String image, String mapImage, String continent, 
-                Float latitude, Float longitude, String label, int reviews, 
+                Float latitude, Float longitude, String label, String subTitle, String imageDes, int reviews, 
                 boolean visa, String dureeDuVol, String heureLocale, 
                 String monnaieLocale, String langueParlee, boolean vaccinsNecessaires,
                 Integer january, Integer february, Integer march, Integer april,
@@ -253,6 +270,8 @@ public class Pays {
         this.latitude = latitude;
         this.longitude = longitude;
         this.label = label;
+        this.subTitle = subTitle;
+        this.imageDes = imageDes;
         this.reviews = reviews;
         this.visa = visa;
         this.dureeDuVol = dureeDuVol;
