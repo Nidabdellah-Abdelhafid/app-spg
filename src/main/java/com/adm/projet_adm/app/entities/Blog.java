@@ -14,6 +14,9 @@ public class Blog {
     private String imageUrl;
     @Column(length = 1000)
     private String description;
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT CURRENT_TIMESTAMP")
+    private String createdAt = new java.text.SimpleDateFormat("dd MMMM yyyy", java.util.Locale.FRENCH)
+            .format(new java.util.Date());
 
     @OneToMany(mappedBy = "blog", fetch = FetchType.LAZY)
     @JsonBackReference("blog-contents")
@@ -67,6 +70,14 @@ public class Blog {
 
     public void setBlogContents(Collection<BlogContent> blogContents) {
         this.blogContents = blogContents;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Blog(Long id, String title, String subTitle, String imageUrl, String description, Collection<BlogContent> blogContents) {

@@ -33,6 +33,10 @@ public class AppUser {
     private String telephone;
     private String pays;
 
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT CURRENT_TIMESTAMP")
+    private String createdAt = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            .format(new java.util.Date());
+
     @ManyToMany(fetch = FetchType.EAGER )
     private Collection<AppRole> appRoles = new ArrayList<>();
 
@@ -164,7 +168,14 @@ public class AppUser {
         this.receivedMessages = receivedMessages;
     }
 
-    public AppUser(long id, String fullname, String email, String password, byte[] userPhoto, String telephone, String pays, Collection<AppRole> appRoles, Collection<Reservation> reservations, Collection<Notification> notifications, Collection<Pays> pays_favs, Collection<Message> sentMessages, Collection<Message> receivedMessages) {
+    public String getCreatedAt() {
+            return createdAt;
+        }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+    public AppUser(long id, String fullname, String email, String password, byte[] userPhoto, String telephone, String pays,String createdAt, Collection<AppRole> appRoles, Collection<Reservation> reservations, Collection<Notification> notifications, Collection<Pays> pays_favs, Collection<Message> sentMessages, Collection<Message> receivedMessages) {
         this.id = id;
         this.fullname = fullname;
         this.email = email;
@@ -174,6 +185,7 @@ public class AppUser {
         this.pays = pays;
         this.appRoles = appRoles;
         this.reservations = reservations;
+        this.createdAt = createdAt;
         this.notifications = notifications;
         this.pays_favs = pays_favs;
         this.sentMessages = sentMessages;

@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-import java.util.Base64;
 
 @RestController
 public class AccountRestController {

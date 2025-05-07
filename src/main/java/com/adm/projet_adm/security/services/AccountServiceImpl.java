@@ -68,6 +68,9 @@ public class AccountServiceImpl implements AccountService {
                 // Update only allowed fields
             existingUser.setFullname(updatedUser.getFullname());
             existingUser.setTelephone(updatedUser.getTelephone());
+            existingUser.setCreatedAt(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            .format(new java.util.Date()));
+
             existingUser.setPays(updatedUser.getPays());
             if (updatedUser.getUserPhoto() != null) {
                 existingUser.setUserPhoto(updatedUser.getUserPhoto());
