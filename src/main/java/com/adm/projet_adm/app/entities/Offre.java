@@ -1,15 +1,9 @@
 package com.adm.projet_adm.app.entities;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 public class Offre {
@@ -43,6 +37,10 @@ public class Offre {
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonBackReference("offre-badges")
     private Collection<Badge> badges = new ArrayList<>();
+
+    @OneToMany(mappedBy = "offre_photos", fetch = FetchType.LAZY)
+    @JsonBackReference("offre-photos")
+    private Collection<Photo> photos;
 
     public Offre() {
 
@@ -151,11 +149,19 @@ public Integer getOffreDayNumber() {
         this.offreDayNumber = offreDayNumber;
     }
 
+    public Collection<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Collection<Photo> photos) {
+        this.photos = photos;
+    }
+
     // Update constructor
     public Offre(Long id, String label, String description, Float price, String image, 
                 Float latitude, Float longitude, Integer offreDayNumber, Collection<Planing> planings, 
                 Collection<Reservation> reservations, Pays pays_offres, 
-                Collection<Theme> themes, Collection<Badge> badges) {
+                Collection<Theme> themes, Collection<Badge> badges, Collection<Photo> photos) {
         this.id = id;
         this.label = label;
         this.description = description;
@@ -169,5 +175,6 @@ public Integer getOffreDayNumber() {
         this.pays_offres = pays_offres;
         this.themes = themes;
         this.badges = badges;
+        this.photos = photos;
     }
 }

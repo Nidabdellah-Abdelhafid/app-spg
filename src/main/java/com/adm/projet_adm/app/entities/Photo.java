@@ -25,6 +25,10 @@ public class Photo {
     @JsonBackReference("photo-programme")
     private Programme programme_photos;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference("photo-offre")
+    private Offre offre_photos;
+
 
     public Photo() {
 
@@ -71,11 +75,20 @@ public class Photo {
         this.programme_photos = programme;
     }
 
-    public Photo(Long id, String url, Pays pays_photos, Planing planing_photos, Programme programme_photos) {
+    public Offre getOffre() {
+        return offre_photos;
+    }
+
+    public void setOffre(Offre offre) {
+        this.offre_photos = offre;
+    }
+
+    public Photo(Long id, String url, Pays pays_photos, Planing planing_photos, Programme programme_photos, Offre offre_photos) {
         this.id = id;
         this.url = url;
         this.pays_photos = pays_photos;
         this.planing_photos = planing_photos;
         this.programme_photos = programme_photos;
+        this.offre_photos = offre_photos;
     }
 }

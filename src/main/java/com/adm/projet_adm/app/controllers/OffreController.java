@@ -11,7 +11,6 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import java.util.Map;
 import java.util.HashMap;
@@ -53,6 +52,7 @@ public class OffreController {
             offreMap.put("latitude", offre.getLatitude());
             offreMap.put("longitude", offre.getLongitude());
             offreMap.put("offreDayNumber", offre.getOffreDayNumber());
+            offreMap.put("photos", offre.getPhotos());
             offreMap.put("pays", offre.getPays());
             offreMap.put("themes", new ArrayList<>(offre.getThemes()));
             offreMap.put("badges", new ArrayList<>(offre.getBadges()));
