@@ -7,7 +7,10 @@ import com.adm.projet_adm.app.services.PlaningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.http.ResponseEntity;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 import java.util.List;
 
 @RestController
@@ -35,8 +38,22 @@ public class PlaningController {
 
     @GetMapping
     // @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public List<Planing> getAll() {
-        return planingService.findAll();
+    public ResponseEntity<List<Map<String, Object>>> getAll() {
+        List<Planing> planings = planingService.findAll();
+        List<Map<String, Object>> response = planings.stream().map(planing -> {
+            Map<String, Object> planingMap = new HashMap<>();
+            planingMap.put("id", planing.getId());
+            planingMap.put("label", planing.getLabel());
+            planingMap.put("description", planing.getDescription());
+            planingMap.put("jourNumero", planing.getJourNumero());
+            planingMap.put("mapPlaningImage", planing.getMapPlaningImage());
+            planingMap.put("planing_programmes", planing.getProgrammes());
+            planingMap.put("photos", planing.getPhotos());
+            planingMap.put("offre", planing.getOffre());
+            return planingMap;
+        }).collect(Collectors.toList());
+        
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
