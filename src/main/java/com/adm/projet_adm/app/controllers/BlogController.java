@@ -36,6 +36,7 @@ public class BlogController {
             blogMap.put("imageUrl", blog.getImageUrl());
             blogMap.put("description", blog.getDescription());
             blogMap.put("createdAt", blog.getCreatedAt());
+            blogMap.put("pays", blog.getPays());
             blogMap.put("blogContents", blog.getBlogContents());
             return blogMap;
         }).collect(Collectors.toList());

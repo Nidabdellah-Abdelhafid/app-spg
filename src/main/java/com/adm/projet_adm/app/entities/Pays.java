@@ -53,6 +53,10 @@ public class Pays {
     @JsonBackReference("pays-appUsers")
     private Collection<AppUser> appUsers;
 
+    @OneToMany(mappedBy = "pays_blogs", fetch = FetchType.LAZY)
+    @JsonBackReference("pays-blogs")
+    private Collection<Blog> blogs = new ArrayList<>();
+
 
     public int getReviews() {
         return reviews;
@@ -254,6 +258,14 @@ public class Pays {
         this.imageDes = imageDes;
     }
 
+    public Collection<Blog> getBlogs() {
+        return blogs;
+    }
+
+    public void setBlogs(Collection<Blog> blogs) {
+        this.blogs = blogs;
+    }
+
     public Pays(String description, Long id, String image, String mapImage, String continent, 
                 Float latitude, Float longitude, String label, String subTitle, String imageDes, int reviews, 
                 boolean visa, String dureeDuVol, String heureLocale, 
@@ -261,7 +273,8 @@ public class Pays {
                 Integer january, Integer february, Integer march, Integer april,
                 Integer may, Integer june, Integer july, Integer august,
                 Integer september, Integer october, Integer november, Integer december,
-                Collection<Offre> offres, Collection<Photo> photos, Collection<AppUser> appUsers) {
+                Collection<Offre> offres, Collection<Photo> photos, Collection<AppUser> appUsers,
+                Collection<Blog> blogs) {
         this.description = description;
         this.id = id;
         this.image = image;
@@ -294,6 +307,7 @@ public class Pays {
         this.october = october;
         this.november = november;
         this.december = december;
+        this.blogs = blogs;
     }
 
 }

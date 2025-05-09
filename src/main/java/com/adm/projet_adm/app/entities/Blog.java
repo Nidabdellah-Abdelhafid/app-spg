@@ -22,6 +22,10 @@ public class Blog {
     @JsonBackReference("blog-contents")
     private Collection<BlogContent> blogContents = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference("blog-pays")
+    private Pays pays_blogs;
+
     public Blog() {}
 
     public Long getId() {
@@ -80,12 +84,21 @@ public class Blog {
         this.createdAt = createdAt;
     }
 
-    public Blog(Long id, String title, String subTitle, String imageUrl, String description, Collection<BlogContent> blogContents) {
+    public Pays getPays() {
+        return pays_blogs;
+    }
+
+    public void setPays(Pays pays) {
+        this.pays_blogs = pays;
+    }
+
+    public Blog(Long id, String title, String subTitle, String imageUrl, String description, Collection<BlogContent> blogContents, Pays pays_blogs) {
         this.id = id;
         this.title = title;
         this.subTitle = subTitle;
         this.imageUrl = imageUrl;
         this.description = description;
         this.blogContents = blogContents;
+        this.pays_blogs = pays_blogs;
     }
 }
