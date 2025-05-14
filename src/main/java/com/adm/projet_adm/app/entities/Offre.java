@@ -9,6 +9,7 @@ import java.util.Collection;
 public class Offre {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String label;
     @Column(length = 1000)
     private String description;

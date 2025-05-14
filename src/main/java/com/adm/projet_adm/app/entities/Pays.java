@@ -18,6 +18,7 @@ public class Pays {
     private String continent;
     private Float latitude;
     private Float longitude;
+    @Column(unique = true)
     private String label;
     private String subTitle;
     private String imageDes;

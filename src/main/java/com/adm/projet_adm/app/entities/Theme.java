@@ -1,22 +1,14 @@
 package com.adm.projet_adm.app.entities;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Entity
 public class Theme {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String label;
-    /*
-    @ManyToMany(mappedBy = "themes", fetch = FetchType.EAGER)
-    @JsonBackReference("theme-offres")
-    private Collection<Offre> offres = new ArrayList<>();
-*/
+    
     public Theme() {
 
     }

@@ -9,6 +9,7 @@ import java.util.Collection;
 public class Blog {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String title;
     private String subTitle;
     private String imageUrl;
