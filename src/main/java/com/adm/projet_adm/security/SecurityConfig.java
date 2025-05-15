@@ -95,7 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .headers().frameOptions().disable()
                     .and()
-                .authorizeRequests().antMatchers("/","/h2-console/**","/refreshToken/**","/login/**","/users/createUser/**","/addRoleToUser/**").permitAll()
+                .authorizeRequests().antMatchers("/","/h2-console/**","/refreshToken/**","/login/**","/users/createUser/**","/addRoleToUser/**","/actuator/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/badges/**", 
                                                 "/api/blogs/**",
                                                 "/api/blog-contents/**",
