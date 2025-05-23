@@ -1,7 +1,6 @@
 package com.adm.projet_adm.app.entities;
 
 
-import com.adm.projet_adm.security.entities.AppUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -49,10 +48,6 @@ public class Pays {
     @OneToMany(mappedBy = "pays_photos", fetch = FetchType.LAZY)
     @JsonBackReference("pays-photos")
     private Collection<Photo> photos;
-
-    @ManyToMany(mappedBy = "pays_favs", fetch = FetchType.LAZY)
-    @JsonBackReference("pays-appUsers")
-    private Collection<AppUser> appUsers;
 
     @OneToMany(mappedBy = "pays_blogs", fetch = FetchType.LAZY)
     @JsonBackReference("pays-blogs")
@@ -134,14 +129,6 @@ public class Pays {
 
     public void setPhotos(Collection<Photo> photos) {
         this.photos = photos;
-    }
-
-    public Collection<AppUser> getAppUsers() {
-        return appUsers;
-    }
-
-    public void setAppUsers(Collection<AppUser> appUsers) {
-        this.appUsers = appUsers;
     }
 
     public String getImage() {
@@ -274,7 +261,7 @@ public class Pays {
                 Integer january, Integer february, Integer march, Integer april,
                 Integer may, Integer june, Integer july, Integer august,
                 Integer september, Integer october, Integer november, Integer december,
-                Collection<Offre> offres, Collection<Photo> photos, Collection<AppUser> appUsers,
+                Collection<Offre> offres, Collection<Photo> photos,
                 Collection<Blog> blogs) {
         this.description = description;
         this.id = id;
@@ -295,7 +282,6 @@ public class Pays {
         this.vaccinsNecessaires = vaccinsNecessaires;
         this.offres = offres;
         this.photos = photos;
-        this.appUsers = appUsers;
         this.january = january;
         this.february = february;
         this.march = march;

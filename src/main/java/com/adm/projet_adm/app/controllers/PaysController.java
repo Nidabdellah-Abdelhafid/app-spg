@@ -46,31 +46,4 @@ public class PaysController {
         paysService.deleteById(id);
     }
 
-    @PostMapping(path = "/userFvrPays")
-    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public void addFavoriteToPays(@RequestBody UserFvrPays userFvrPays) {
-        System.out.println("theme to offre"+userFvrPays);
-        paysService.addFavoriteToPays(userFvrPays.getPays(),userFvrPays.getAppUser());
-    }
-
-}
-class UserFvrPays {
-    private Pays pays;
-    private AppUser appUser;
-
-    public Pays getPays() {
-        return pays;
-    }
-
-    public void setPays(Pays pays) {
-        this.pays = pays;
-    }
-
-    public AppUser getAppUser() {
-        return appUser;
-    }
-
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
-    }
 }

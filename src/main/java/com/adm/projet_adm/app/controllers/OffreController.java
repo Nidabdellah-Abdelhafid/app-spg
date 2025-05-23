@@ -6,6 +6,8 @@ import com.adm.projet_adm.app.entities.Pays;
 import com.adm.projet_adm.app.entities.Theme;
 import com.adm.projet_adm.app.repositories.PaysRepository;
 import com.adm.projet_adm.app.services.OffreService;
+import com.adm.projet_adm.security.entities.AppUser;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +56,7 @@ public class OffreController {
             offreMap.put("offreDayNumber", offre.getOffreDayNumber());
             offreMap.put("photos", offre.getPhotos());
             offreMap.put("pays", offre.getPays());
+            offreMap.put("usersFvrOffre", offre.getAppUsers());
             offreMap.put("themes", new ArrayList<>(offre.getThemes()));
             offreMap.put("badges", new ArrayList<>(offre.getBadges()));
             return offreMap;
@@ -128,6 +131,38 @@ public class OffreController {
             return ResponseEntity.internalServerError().body("Error fetching themes");
         }
     }
+
+    @PostMapping(path = "/userFvrOffre")
+    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<?> addFavoriteToOffre(@RequestBody UserFvrOffre userFvrOffre) {
+        try {
+            Offre offre = offreService.findById(userFvrOffre.getOffre().getId());
+            if (offre == null) {
+                return ResponseEntity.notFound().build();
+            }
+            offreService.addFavoriteToOffre(offre, userFvrOffre.getAppUser());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            System.err.println("Error adding favorite to offre: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Error adding favorite");
+        }
+    }
+
+    @DeleteMapping(path = "/userFvrOffre")
+    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<?> removeFavoriteFromOffre(@RequestBody UserFvrOffre userFvrOffre) {
+        try {
+            Offre offre = offreService.findById(userFvrOffre.getOffre().getId());
+            if (offre == null) {
+                return ResponseEntity.notFound().build();
+            }
+            offreService.removeFavoriteFromOffre(offre, userFvrOffre.getAppUser());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            System.err.println("Error removing favorite from offre: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Error removing favorite");
+        }
+    }
     
 }
 
@@ -171,5 +206,26 @@ class BadgeOffreForme {
 
     public void setOffre(Offre offre) {
         this.offre = offre;
+    }
+}
+
+class UserFvrOffre {
+    private Offre offre;
+    private AppUser appUser;
+
+    public Offre getOffre() {
+        return offre;
+    }
+
+    public void setOffre(Offre offre) {
+        this.offre = offre;
+    }
+
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 }

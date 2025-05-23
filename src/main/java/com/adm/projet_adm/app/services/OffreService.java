@@ -6,6 +6,9 @@ import com.adm.projet_adm.app.entities.Theme;
 import com.adm.projet_adm.app.repositories.BadgeRepository;
 import com.adm.projet_adm.app.repositories.OffreRepository;
 import com.adm.projet_adm.app.repositories.ThemeRepository;
+import com.adm.projet_adm.security.entities.AppUser;
+import com.adm.projet_adm.security.repositories.AppUserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,9 @@ public class OffreService {
 
     @Autowired
     private BadgeRepository badgeRepository;
+
+    @Autowired
+    private AppUserRepository appUserRepository;
 
     public Offre save(Offre offre) {
         return offreRepository.save(offre);
@@ -79,6 +85,42 @@ public class OffreService {
                     
             if (!hasBadge) {
                 offreById.getBadges().add(badgeById);
+            }
+        }
+    }
+
+    @Transactional
+    public void addFavoriteToOffre(Offre offre, AppUser appUser) {
+        if (offreRepository.existsById(offre.getId())) {
+            Offre offreById = offreRepository.findOffreById(offre.getId());
+            AppUser appUserById = appUserRepository.findByEmail(appUser.getEmail());
+            
+            if (appUserById != null) {
+                boolean hasFavorite = offreById.getAppUsers().stream()
+                        .anyMatch(u -> u.getId() == appUserById.getId());
+                        
+                if (!hasFavorite) {
+                    offreById.getAppUsers().add(appUserById);
+                    offreRepository.save(offreById);
+                }
+            }
+        }
+    }
+
+    @Transactional
+    public void removeFavoriteFromOffre(Offre offre, AppUser appUser) {
+        if (offreRepository.existsById(offre.getId())) {
+            Offre offreById = offreRepository.findOffreById(offre.getId());
+            AppUser appUserById = appUserRepository.findByEmail(appUser.getEmail());
+            
+            if (appUserById != null) {
+                boolean hasFavorite = offreById.getAppUsers().stream()
+                        .anyMatch(u -> u.getId() == appUserById.getId());
+                        
+                if (hasFavorite) {
+                    offreById.getAppUsers().remove(appUserById);
+                    offreRepository.save(offreById);
+                }
             }
         }
     }

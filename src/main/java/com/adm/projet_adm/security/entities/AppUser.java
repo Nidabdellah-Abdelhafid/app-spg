@@ -2,7 +2,7 @@ package com.adm.projet_adm.security.entities;
 
 import com.adm.projet_adm.app.entities.Message;
 import com.adm.projet_adm.app.entities.Notification;
-import com.adm.projet_adm.app.entities.Pays;
+import com.adm.projet_adm.app.entities.Offre;
 import com.adm.projet_adm.app.entities.Reservation;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -48,9 +48,9 @@ public class AppUser {
     @JsonBackReference("appUser-notification")
     private Collection<Notification> notifications = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JsonBackReference("appUser-pays")
-    private Collection<Pays> pays_favs = new ArrayList<>();
+    @ManyToMany(mappedBy = "appUsers", fetch = FetchType.LAZY)
+    @JsonBackReference("user-offres")
+    private Collection<Offre> offres_favs = new ArrayList<>();
 
     @OneToMany(mappedBy = "sender")
     @JsonBackReference("appUser-sentMessages")
@@ -144,12 +144,12 @@ public class AppUser {
         this.notifications = notifications;
     }
 
-    public Collection<Pays> getPays_favs() {
-        return pays_favs;
+    public Collection<Offre> getOffres_favs() {
+        return offres_favs;
     }
 
-    public void setPays_favs(Collection<Pays> pays_favs) {
-        this.pays_favs = pays_favs;
+    public void setOffres_favs(Collection<Offre> offres_favs) {
+        this.offres_favs = offres_favs;
     }
 
     public Collection<Message> getSentMessages() {
@@ -175,7 +175,7 @@ public class AppUser {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
-    public AppUser(long id, String fullname, String email, String password, byte[] userPhoto, String telephone, String pays,String createdAt, Collection<AppRole> appRoles, Collection<Reservation> reservations, Collection<Notification> notifications, Collection<Pays> pays_favs, Collection<Message> sentMessages, Collection<Message> receivedMessages) {
+    public AppUser(long id, String fullname, String email, String password, byte[] userPhoto, String telephone, String pays,String createdAt, Collection<AppRole> appRoles, Collection<Reservation> reservations, Collection<Notification> notifications, Collection<Offre> offres_favs, Collection<Message> sentMessages, Collection<Message> receivedMessages) {
         this.id = id;
         this.fullname = fullname;
         this.email = email;
@@ -187,7 +187,7 @@ public class AppUser {
         this.reservations = reservations;
         this.createdAt = createdAt;
         this.notifications = notifications;
-        this.pays_favs = pays_favs;
+        this.offres_favs = offres_favs;
         this.sentMessages = sentMessages;
         this.receivedMessages = receivedMessages;
     }

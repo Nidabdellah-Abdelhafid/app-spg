@@ -1,5 +1,6 @@
 package com.adm.projet_adm.app.entities;
 
+import com.adm.projet_adm.security.entities.AppUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -42,6 +43,11 @@ public class Offre {
     @OneToMany(mappedBy = "offre_photos", fetch = FetchType.LAZY)
     @JsonBackReference("offre-photos")
     private Collection<Photo> photos;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonBackReference("offre-users")
+    private Collection<AppUser> appUsers = new ArrayList<>();
+    
 
     public Offre() {
 
@@ -158,11 +164,20 @@ public Integer getOffreDayNumber() {
         this.photos = photos;
     }
 
-    // Update constructor
+    public Collection<AppUser> getAppUsers() {
+        return appUsers;
+    }
+
+    public void setAppUsers(Collection<AppUser> appUsers) {
+        this.appUsers = appUsers;
+    }
+
+    
     public Offre(Long id, String label, String description, Float price, String image, 
                 Float latitude, Float longitude, Integer offreDayNumber, Collection<Planing> planings, 
                 Collection<Reservation> reservations, Pays pays_offres, 
-                Collection<Theme> themes, Collection<Badge> badges, Collection<Photo> photos) {
+                Collection<Theme> themes, Collection<Badge> badges, Collection<Photo> photos,
+                Collection<AppUser> appUsers) {
         this.id = id;
         this.label = label;
         this.description = description;
@@ -177,5 +192,6 @@ public Integer getOffreDayNumber() {
         this.themes = themes;
         this.badges = badges;
         this.photos = photos;
+        this.appUsers = appUsers;
     }
 }
