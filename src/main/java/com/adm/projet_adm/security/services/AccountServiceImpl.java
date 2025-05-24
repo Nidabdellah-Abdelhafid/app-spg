@@ -87,4 +87,49 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException("Unexpected error while updating user");
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteUserProfile(String email) {
+        try {
+            AppUser user = appUserRepository.findByEmail(email);
+            if (user != null) {
+                // Clear messages first
+                user.getSentMessages().forEach(message -> {
+                    message.setSender(null);
+                    message.setReceiver(null);
+                });
+                
+                user.getReceivedMessages().forEach(message -> {
+                    message.setSender(null);
+                    message.setReceiver(null);
+                });
+                
+                // Clear other relationships
+                user.getAppRoles().clear();
+                user.getNotifications().clear();
+                user.getOffres_favs().forEach(offre -> {
+                    offre.getAppUsers().remove(user);
+                });
+                user.getOffres_favs().clear();
+                
+                // Clear reservations
+                user.getReservations().forEach(reservation -> {
+                    reservation.setAppUser(null);
+                    reservation.setOffre_reservations(null);
+                });
+                user.getReservations().clear();
+                
+                // Flush changes before deletion
+                appUserRepository.flush();
+                
+                // Finally delete the user
+                appUserRepository.delete(user);
+            } else {
+                throw new RuntimeException("User not found");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting user profile: " + e.getMessage());
+        }
+    }
 }

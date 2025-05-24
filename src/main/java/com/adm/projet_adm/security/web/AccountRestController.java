@@ -146,6 +146,19 @@ public class AccountRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @PostMapping("/profile/delete")
+    @PostAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<?> deleteProfile(Principal principal) {
+        try {
+            AppUser currentUser = accountService.getUserbyEmail(principal.getName());
+            accountService.deleteUserProfile(currentUser.getEmail());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error deleting profile: " + e.getMessage());
+        }
+    }
 }
 
 

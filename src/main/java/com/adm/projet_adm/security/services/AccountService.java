@@ -14,4 +14,5 @@ public interface AccountService {
         AppUser getUserbyEmail(String email);
         List<AppUser> getUsers();
         AppUser updateUser(AppUser user);
+        void deleteUserProfile(String email);
 }
