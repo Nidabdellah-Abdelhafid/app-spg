@@ -140,9 +140,8 @@ public class MessageController {
 
     private Message.MessageType determineMessageType(String contentType) {
         if (contentType.startsWith("image/")) return Message.MessageType.IMAGE;
-        if (contentType.startsWith("video/")) return Message.MessageType.VIDEO;
-        if (contentType.startsWith("audio/")) return Message.MessageType.AUDIO;
-        return Message.MessageType.DOCUMENT;
+        if (contentType.startsWith("application/") || contentType.startsWith("text/")) return Message.MessageType.DOCUMENT;
+        return Message.MessageType.TEXT;
     }
 
     @GetMapping("/{id}")

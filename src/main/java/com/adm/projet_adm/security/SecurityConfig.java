@@ -104,7 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                                 "/api/photos/**",
                                                 "/api/planings/**",
                                                 "/api/programmes/**",
-                                                "/api/themes/**").permitAll()
+                                                "/api/themes/**","/uploads/**").permitAll()
                 .antMatchers("/ws/**").permitAll()  // Allow WebSocket connections
                 .antMatchers("/topic/**", "/queue/**").authenticated()    
                 .and()

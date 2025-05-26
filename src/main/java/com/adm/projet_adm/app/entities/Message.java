@@ -15,7 +15,7 @@ public class Message {
     private Long id;
 
     private Date date;
-    
+    @Column(length = 1000)
     private String contenu;
     
     @Enumerated(EnumType.STRING)
@@ -44,8 +44,6 @@ public class Message {
     public enum MessageType {
         TEXT,
         IMAGE,
-        VIDEO,
-        AUDIO,
         DOCUMENT
     }
 
